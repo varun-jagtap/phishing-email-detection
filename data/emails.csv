@@ -1,0 +1,31 @@
+email_text,label
+"Urgent: Your account has been suspended. Verify immediately at http://secure-update-login.com",Phishing
+"Congratulations! You've won a gift card. Claim now at https://tinyurl.com/free-prize",Phishing
+"Security alert: unusual sign in attempt. Confirm password at www.verify-account-now.net",Phishing
+"Final reminder: invoice overdue, pay today using http://billing-check-pay.info",Phishing
+"Your mailbox is almost full. Upgrade now at https://mail-upgrade-center.com",Phishing
+"We detected suspicious activity. Login to restore access: http://account-safe-check.org",Phishing
+"Action required: tax refund pending. Submit details at https://refund-portal-fast.com",Phishing
+"Dear user, update your payroll information here: http://employee-payroll-update.biz",Phishing
+"Important notice from IT desk: reset credentials at www.company-auth-verify.com",Phishing
+"Your package is on hold. Pay shipping fee now at https://delivery-fee-alert.net",Phishing
+"Account verification required to avoid closure: http://banking-security-verify.co",Phishing
+"Immediate response needed: unauthorized payment detected. Confirm now at http://wallet-review-now.site",Phishing
+"Please approve this login request by entering your OTP at https://otp-confirmation-service.io",Phishing
+"Exclusive deal ends tonight! Open attachment and submit account details.",Phishing
+"We noticed multiple failed login attempts. Validate your profile at http://profile-checker.live",Phishing
+"Reminder: company meeting moved to 3 PM in conference room B.",Safe
+"Hi team, attached are the minutes from yesterday's project sync.",Safe
+"Your Amazon order has shipped and will arrive on Tuesday.",Safe
+"Lunch at 1 PM? Let me know if that works for you.",Safe
+"Please review the updated design document in the shared drive.",Safe
+"Monthly newsletter: product updates and upcoming webinars.",Safe
+"Can you approve my leave request for next Friday?",Safe
+"Invoice #4821 has been paid successfully. Thank you for your business.",Safe
+"Friendly reminder to submit timesheets by end of day.",Safe
+"Happy birthday! Wishing you a wonderful year ahead.",Safe
+"Your password was changed successfully from a trusted device.",Safe
+"Quarterly earnings report is now available on the internal portal.",Safe
+"Let's reschedule our call to tomorrow morning.",Safe
+"Thanks for your quick response on the support ticket.",Safe
+"Welcome to the team! Please complete your onboarding forms this week.",Safe
