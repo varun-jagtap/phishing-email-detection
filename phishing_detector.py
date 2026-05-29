@@ -33,6 +33,9 @@ KEYWORD_PATTERNS = [
     re.compile(rf"\b{re.escape(keyword)}\b", re.IGNORECASE)
     for keyword in PHISHING_KEYWORDS
 ]
+MIN_DF = 1
+MAX_ITERATIONS = 2000
+TEST_SIZE = 0.3
 
 
 def count_urls(text: str) -> int:
@@ -53,7 +56,7 @@ def extract_features(df: pd.DataFrame) -> pd.DataFrame:
 def build_model() -> Pipeline:
     preprocessor = ColumnTransformer(
         transformers=[
-            ("text", TfidfVectorizer(ngram_range=(1, 2), min_df=2), "email_text"),
+            ("text", TfidfVectorizer(ngram_range=(1, 2), min_df=MIN_DF), "email_text"),
             (
                 "extra",
                 # Centering must be disabled because text features are sparse.
@@ -67,7 +70,7 @@ def build_model() -> Pipeline:
     return Pipeline(
         steps=[
             ("features", preprocessor),
-            ("classifier", LogisticRegression(max_iter=2000, random_state=42)),
+            ("classifier", LogisticRegression(max_iter=MAX_ITERATIONS, random_state=42)),
         ]
     )
 
@@ -93,7 +96,7 @@ def train_and_evaluate(dataset_path: Path) -> Pipeline:
     y = df["label"]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=42, stratify=y
+        X, y, test_size=TEST_SIZE, random_state=42, stratify=y
     )
 
     model = build_model()
