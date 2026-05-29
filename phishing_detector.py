@@ -29,29 +29,34 @@ PHISHING_KEYWORDS = [
 ]
 
 URL_PATTERN = re.compile(r"https?://\S+|www\.\S+", re.IGNORECASE)
+KEYWORD_PATTERNS = [
+    re.compile(rf"\b{re.escape(keyword)}\b", re.IGNORECASE)
+    for keyword in PHISHING_KEYWORDS
+]
+
+
+def count_urls(text: str) -> int:
+    return len(URL_PATTERN.findall(text))
+
+
+def count_phishing_keywords(text: str) -> int:
+    return sum(len(pattern.findall(text)) for pattern in KEYWORD_PATTERNS)
 
 
 def extract_features(df: pd.DataFrame) -> pd.DataFrame:
     features_df = df.copy()
-
-    def url_count(text: str) -> int:
-        return len(URL_PATTERN.findall(text))
-
-    def keyword_count(text: str) -> int:
-        lower_text = text.lower()
-        return sum(lower_text.count(keyword) for keyword in PHISHING_KEYWORDS)
-
-    features_df["url_count"] = features_df["email_text"].apply(url_count)
-    features_df["keyword_count"] = features_df["email_text"].apply(keyword_count)
+    features_df["url_count"] = features_df["email_text"].apply(count_urls)
+    features_df["keyword_count"] = features_df["email_text"].apply(count_phishing_keywords)
     return features_df
 
 
 def build_model() -> Pipeline:
     preprocessor = ColumnTransformer(
         transformers=[
-            ("text", TfidfVectorizer(ngram_range=(1, 2), min_df=1), "email_text"),
+            ("text", TfidfVectorizer(ngram_range=(1, 2), min_df=2), "email_text"),
             (
                 "extra",
+                # Centering must be disabled because text features are sparse.
                 Pipeline([("scale", StandardScaler(with_mean=False))]),
                 ["url_count", "keyword_count"],
             ),
@@ -110,16 +115,9 @@ def train_and_evaluate(dataset_path: Path) -> Pipeline:
 
 
 def classify_email(model: Pipeline, email_text: str) -> str:
-    data = pd.DataFrame(
-        {
-            "email_text": [email_text],
-            "url_count": [len(URL_PATTERN.findall(email_text))],
-            "keyword_count": [
-                sum(email_text.lower().count(keyword) for keyword in PHISHING_KEYWORDS)
-            ],
-        }
-    )
-    return str(model.predict(data)[0])
+    data = pd.DataFrame({"email_text": [email_text]})
+    data = extract_features(data)
+    return str(model.predict(data[["email_text", "url_count", "keyword_count"]])[0])
 
 
 def main() -> None:
